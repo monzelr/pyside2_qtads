@@ -9,18 +9,18 @@ import cmake_build_extension
 import setuptools
 from wheel.bdist_wheel import bdist_wheel
 
-import PySide6
-import shiboken6
+import PySide2
+import shiboken2
 
 
-if os.getenv('PYSIDE6_QTADS_NO_HARD_PYSIDE_REQUIREMENT'):
+if os.getenv('PYSIDE2_QTADS_NO_HARD_PYSIDE_REQUIREMENT'):
     install_requirements = [
-        'PySide6-Essentials', 'shiboken6'
+        'PySide2', 'shiboken2'
     ]
 else:
     install_requirements = [
-        f'PySide6-Essentials=={PySide6.__version__}',
-        f'shiboken6=={shiboken6.__version__}'
+        f'PySide2=={PySide2.__version__}',
+        f'shiboken2=={shiboken2.__version__}'
     ]
 
 
@@ -50,7 +50,7 @@ class CustomCMakeExtension(cmake_build_extension.CMakeExtension):
         cmake_component: str = None,
         cmake_depends_on: List[str] = (),
         expose_binaries: List[str] = (),
-        cmake_generator: str = "Ninja",
+        cmake_generator: str = "Visual Studio 16 2019",  # "Ninja",
         **kwargs
     ):
         setuptools.Extension.__init__(self, name=name, sources=[], **kwargs)
@@ -79,8 +79,8 @@ init_py = Path("init.py").read_text()
 setuptools.setup(
     ext_modules=[
         CustomCMakeExtension(
-            name="PySide6-QtAds",
-            install_prefix="PySide6QtAds",
+            name="PySide2-QtAds",
+            install_prefix="PySide2QtAds",
             write_top_level_init=init_py,
             source_dir=str(Path(__file__).parent.absolute()),
             cmake_configure_options=[
@@ -89,6 +89,7 @@ setuptools.setup(
                 "-DADS_VERSION=4.3.0",
                 f"-DPython3_ROOT_DIR={Path(sys.prefix)}",
                 f"-DPython_EXECUTABLE={Path(sys.executable)}"
+                "-G=Visual Studio 16 2019",
             ],
             py_limited_api=True
         ),

@@ -9,7 +9,7 @@ endif()
 
 # ================================ General configuration ======================================
 
-project(PySide6QtAds)
+project(PySide2QtAds)
 
 # Find Python
 find_package (Python3 COMPONENTS Interpreter)
@@ -22,7 +22,7 @@ message(STATUS "Using python: ${Python3_EXECUTABLE}")
 set(OpenGL_GL_PREFERENCE "LEGACY")
 
 # Find the required Qt packages
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 
 # Set CPP standard to C++11 minimum.
 set(CMAKE_CXX_STANDARD 11)
@@ -31,10 +31,10 @@ set(CMAKE_CXX_STANDARD 11)
 set(qtads_subdir "Qt-Advanced-Docking-System")
 set(qtads_dir ${CMAKE_CURRENT_SOURCE_DIR}/${qtads_subdir})
 add_subdirectory(${qtads_subdir} EXCLUDE_FROM_ALL)
-set(project_library "qt6advanceddocking")
+set(project_library "qt5advanceddocking")
 
 # The name of the generated bindings module (as imported in Python).
-set(bindings_library "PySide6QtAds")
+set(bindings_library "PySide2QtAds")
 
 # The header file with all the types and functions for which bindings will be generated.
 # Usually it simply includes other headers of the library you are creating bindings for.
@@ -74,7 +74,7 @@ set(generated_sources
     ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/ads_cpushbutton_wrapper.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/ads_cresizehandle_wrapper.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/ads_wrapper.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/pyside6qtads_module_wrapper.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/pyside2qtads_module_wrapper.cpp
     )
 
 
@@ -115,7 +115,7 @@ pyside_config(--shiboken-module-shared-libraries-cmake shiboken_shared_libraries
 pyside_config(--python-link-flags-cmake python_linking_data 0)
 pyside_config(--pyside-shared-libraries-cmake pyside_shared_libraries 0)
 
-set(shiboken_path "${shiboken_generator_path}/shiboken6${CMAKE_EXECUTABLE_SUFFIX}")
+set(shiboken_path "${shiboken_generator_path}/shiboken2${CMAKE_EXECUTABLE_SUFFIX}")
 if(NOT EXISTS ${shiboken_path})
     message(FATAL_ERROR "Shiboken executable not found at path: ${shiboken_path}")
 endif()
@@ -126,11 +126,11 @@ endif()
 set(CMAKE_SKIP_BUILD_RPATH TRUE)
 
 if(UNIX AND NOT APPLE)
-    set(CMAKE_INSTALL_RPATH "$ORIGIN/lib:$ORIGIN/../PySide6/:$ORIGIN/../PySide6/Qt/lib:$ORIGIN/../shiboken6")
+    set(CMAKE_INSTALL_RPATH "$ORIGIN/lib:$ORIGIN/../PySide2/:$ORIGIN/../PySide2/Qt/lib:$ORIGIN/../shiboken2")
 endif()
 
 if(APPLE)
-    set(CMAKE_INSTALL_RPATH "@loader_path/lib;@loader_path/../PySide6/;@loader_path/../PySide6/Qt/lib;@loader_path/../shiboken6")
+    set(CMAKE_INSTALL_RPATH "@loader_path/lib;@loader_path/../PySide2/;@loader_path/../PySide2/Qt/lib;@loader_path/../shiboken2")
     set(MACOSX_RPATH TRUE)
 endif()
 
@@ -138,7 +138,7 @@ endif()
 
 # Get the relevant Qt include dirs, to pass them on to shiboken.
 set(QT_INCLUDE_DIR "")
-get_target_property(QT_INCLUDE_DIR_LIST Qt6::Core INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(QT_INCLUDE_DIR_LIST Qt5::Core INTERFACE_INCLUDE_DIRECTORIES)
 foreach(_Q ${QT_INCLUDE_DIR_LIST})
     if(NOT "${_Q}" MATCHES "QtCore$")
         set(QT_INCLUDE_DIR "${_Q}")
@@ -151,26 +151,26 @@ endif()
 set(QT_INCLUDES "")
 list(APPEND QT_INCLUDES "-I${QT_INCLUDE_DIR}")
 
-get_property(QT_CORE_INCLUDE_DIRS TARGET Qt6::Core PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+get_property(QT_CORE_INCLUDE_DIRS TARGET Qt5::Core PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
 foreach(INCLUDE_DIR ${QT_CORE_INCLUDE_DIRS})
     list(APPEND QT_INCLUDES "-I${INCLUDE_DIR}")
 endforeach()
 
-get_property(QT_GUI_INCLUDE_DIRS TARGET Qt6::Gui PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+get_property(QT_GUI_INCLUDE_DIRS TARGET Qt5::Gui PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
 foreach(INCLUDE_DIR ${QT_GUI_INCLUDE_DIRS})
     list(APPEND QT_INCLUDES "-I${INCLUDE_DIR}")
 endforeach()
 
-get_property(QT_WIDGETS_INCLUDE_DIRS TARGET Qt6::Widgets PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+get_property(QT_WIDGETS_INCLUDE_DIRS TARGET Qt5::Widgets PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
 foreach(INCLUDE_DIR ${QT_WIDGETS_INCLUDE_DIRS})
     list(APPEND QT_INCLUDES "-I${INCLUDE_DIR}")
 endforeach()
 
 # Check if Qt is a framework build on macOS. This affects how include paths should be handled.
-get_target_property(QtCore_is_framework Qt6::Core FRAMEWORK)
+get_target_property(QtCore_is_framework Qt5::Core FRAMEWORK)
 if (QtCore_is_framework)
     # Get the path to the Qt framework dir.
-    set(QT_FRAMEWORK_INCLUDE_DIR "${QT6_INSTALL_PREFIX}/${QT6_INSTALL_LIBS}")
+    set(QT_FRAMEWORK_INCLUDE_DIR "${QT5_INSTALL_PREFIX}/${QT5_INSTALL_LIBS}")
     message(STATUS "*** QT_FRAMEWORK_INCLUDE_DIR is ${QT_FRAMEWORK_INCLUDE_DIR}")
     list(APPEND QT_INCLUDES "--framework-include-paths=${QT_FRAMEWORK_INCLUDE_DIR}")
 endif()
@@ -230,12 +230,12 @@ target_include_directories(${bindings_library} PRIVATE ${python_include_dir})
 target_include_directories(${bindings_library} PRIVATE ${shiboken_include_dir})
 target_include_directories(${bindings_library} PRIVATE "${CMAKE_SOURCE_DIR}/src")
 
-target_link_libraries(${bindings_library} PRIVATE Qt6::Widgets)
+target_link_libraries(${bindings_library} PRIVATE Qt5::Widgets)
 target_link_libraries(${bindings_library} PRIVATE ${project_library})
 target_link_libraries(${bindings_library} PRIVATE ${pyside_shared_libraries})
 target_link_libraries(${bindings_library} PRIVATE ${shiboken_shared_libraries})
 
-target_compile_options(qt6advanceddocking PRIVATE -Og)
+target_compile_options(qt5advanceddocking PRIVATE -Og)
 target_compile_options(${bindings_library} PRIVATE -Og)
 target_compile_definitions(${bindings_library} PRIVATE "-DPy_LIMITED_API=0x03070000")
 

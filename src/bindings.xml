@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<typesystem package="PySide6QtAds">
+<typesystem package="PySide2QtAds">
     <primitive-type name="bool"/>
     <primitive-type name="std::string"/>
     <primitive-type name="std::function"/>

@@ -4,8 +4,8 @@ requires = [
     "setuptools>=45",
     "setuptools_scm[toml]>=6.0",
     "cmake_build_extension",
-    "PySide6-Essentials",
-    "shiboken6",
-    "shiboken6_generator"
+    "PySide2",
+    "shiboken2",
+    "shiboken2_generator"
 ]
 build-backend = "setuptools.build_meta"

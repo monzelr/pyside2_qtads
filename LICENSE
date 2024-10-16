@@ -1,4 +1,6 @@
-PySide6-QtAds is licensed under GNU LGPL v2.1.
+PySide2-QtAds is licensed under GNU LGPL v2.1.
+
+Based on PySide6 binding work by mborgerson via https://github.com/mborgerson/pyside6_qtads
 
 Based on PySide6 binding work by CJ Niemira via https://github.com/cniemira/pyside6_qtads
 
