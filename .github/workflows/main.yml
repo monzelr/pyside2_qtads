@@ -149,7 +149,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-24.04-arm
             pyside_ver: ${{ needs.build_src.outputs.rel0 }}
             wheel: cp39-manylinux_aarch64
             arch: aarch64
@@ -162,10 +162,6 @@ jobs:
       - name: Unpack sdist
         shell: bash
         run: tar --strip-components 1 -xvf *.tar.gz
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: all
       - name: Setup Qt vars
         shell: bash
         run: |
