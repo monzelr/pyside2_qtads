@@ -7,7 +7,7 @@ jobs:
       rel0: ${{ steps.query.outputs.rel0 }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           submodules: recursive
       - name: Query PyPI for recent PySide release number
@@ -21,7 +21,7 @@ jobs:
           python -m pip install --user build
           python -m build --sdist
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: source
           path: dist/*.tar.gz
@@ -53,11 +53,11 @@ jobs:
     steps:
       - name: Setup Python
         if: runner.os == 'Windows'
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
         with:
           python-version: '3.9'
       - name: Download sdist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4
         with:
           name: source
       - name: Unpack sdist
@@ -84,10 +84,10 @@ jobs:
           echo "QT_VERSION=$QT_VERSION" >> $GITHUB_ENV
           echo "QT_BASE_DIR=$QT_BASE_DIR" >> $GITHUB_ENV
           echo "QT6_DIR=$QT6_DIR" >> $GITHUB_ENV
-      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1
         if: runner.os == 'Windows'
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
+        uses: pypa/cibuildwheel@ee63bf16da6cddfb925f542f2c7b59ad50e93969 # v2.22.0
         with:
           output-dir: wheelhouse
         env:
@@ -138,7 +138,7 @@ jobs:
       #     done
       #     popd
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: wheel-${{ matrix.wheel }}
           path: ./wheelhouse/*.whl
@@ -156,7 +156,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Download sdist
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4
         with:
           name: source
       - name: Unpack sdist
@@ -185,7 +185,7 @@ jobs:
           EOF
           docker run --platform=linux/aarch64 --rm -v $PWD:/work -w /work mborgerson/pyside6qtads-ubuntu2404-aarch64 bash ./build.sh
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: wheel-${{ matrix.wheel }}
           path: ./dist/*.whl
@@ -196,11 +196,11 @@ jobs:
     # upload to PyPI on every tag starting with 'v'
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4
         with:
           name: source
           path: dist
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4
         with:
           pattern: wheel-*
           path: dist
