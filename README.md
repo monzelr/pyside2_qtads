@@ -11,16 +11,16 @@ Pre-built wheels are available for Windows, macOS, and Linux. You can install wi
 pip install PySide6-QtAds
 ```
 
-You may also build from source. Example build from source on Ubuntu 22.04:
+You may also build from source. Example build from source on Ubuntu 24.04:
 
 ```bash
 # Install Qt (for example, using aqtinstall)
 pip install aqtinstall
-aqt install-qt linux desktop 6.8.1 --outputdir qt
+aqt install-qt linux desktop 6.9.0 --outputdir qt
 
 # Build PySide6-QtAds
-LD_LIBRARY_PATH=$PWD/qt/6.8.1/gcc_64/lib \
-CMAKE_PREFIX_PATH=$PWD/qt/6.8.1/gcc_64/lib/cmake/ \
+LD_LIBRARY_PATH=$PWD/qt/6.9.0/gcc_64/lib \
+CMAKE_PREFIX_PATH=$PWD/qt/6.9.0/gcc_64/lib/cmake/ \
 PIP_EXTRA_INDEX_URL=https://download.qt.io/official_releases/QtForPython/ \
 pip install -v .
 ```
