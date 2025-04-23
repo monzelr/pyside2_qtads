@@ -11,7 +11,8 @@ Pre-built wheels are available for Windows, macOS, and Linux. You can install wi
 pip install PySide6-QtAds
 ```
 
-You may also build from source. Example build from source on Ubuntu 24.04:
+## You may also build from source.
+### Example build from source on Ubuntu 24.04:
 
 ```bash
 # Install Qt (for example, using aqtinstall)
@@ -24,6 +25,18 @@ CMAKE_PREFIX_PATH=$PWD/qt/6.9.0/gcc_64/lib/cmake/ \
 PIP_EXTRA_INDEX_URL=https://download.qt.io/official_releases/QtForPython/ \
 pip install -v .
 ```
+
+### Example build from source on Windows:
+```bat
+# 1. Install Qt6 from source ...
+# 2. Install PySide6 from source ...
+# 3. Build PySide6-QtAds
+call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x64
+set "CMAKE_PREFIX_PATH=%USERPROFILE%\Qt\6.8.3\lib\cmake"
+cd pyside6_qtads
+python setup.py bdist_wheel
+```
+Note: PySide6-QtAds is always dependend on one Qt Version (e.g. 6.8.3)!
 
 Note: `shiboken6-generator` is required when building from source. It will be downloaded automatically in the command above from Qt's package index, as it is not available on PyPI.
 
