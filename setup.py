@@ -50,7 +50,7 @@ class CustomCMakeExtension(cmake_build_extension.CMakeExtension):
         cmake_component: str = None,
         cmake_depends_on: List[str] = (),
         expose_binaries: List[str] = (),
-        cmake_generator: str = "Ninja",
+        cmake_generator: str = "Visual Studio 17 2022",
         **kwargs
     ):
         setuptools.Extension.__init__(self, name=name, sources=[], **kwargs)
@@ -88,7 +88,8 @@ setuptools.setup(
                 "-DBUILD_STATIC:BOOL=ON",
                 "-DADS_VERSION=4.3.0",
                 f"-DPython3_ROOT_DIR={Path(sys.prefix)}",
-                f"-DPython_EXECUTABLE={Path(sys.executable)}"
+                f"-DPython_EXECUTABLE={Path(sys.executable)}",
+                "-G=Visual Studio 17 2022",
             ],
             py_limited_api=True
         ),
